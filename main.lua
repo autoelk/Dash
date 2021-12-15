@@ -23,13 +23,16 @@ function love.load()
   font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u / 3)
 
   tempKey = "temp"
+  gameTime = 0
 end
 
 function love.keypressed(key, scancode, isrepeat)
   for index, value in ipairs(keys) do
     if scancode == value.name then
+      player1.key = scancode
       player1.x = value.x + value.w/2
       player1.y = value.y + 1/2
+      table.insert(player1.trail, {name = scancode, x = player1.x, y = player1.y, t = gameTime})
     end
   end
 
@@ -37,6 +40,9 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.update(dt)
+  gameTime = gameTime + dt
+  
+  player1:UpdateTrail()
 end
 
 function love.draw()
