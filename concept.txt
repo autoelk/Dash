@@ -1,0 +1,5 @@
+each player controls a character
+the last key that they pressed represents the place that they are located
+the goal of the game is to dash through your opponent's character
+get powerups for typing out certain words
+maybe pressing SHIFT changes the field in some way
