@@ -32,7 +32,7 @@ function love.keypressed(key, scancode, isrepeat)
       player1.key = scancode
       player1.x = value.x + value.w/2
       player1.y = value.y + 1/2
-      table.insert(player1.trail, {name = scancode, x = player1.x, y = player1.y, t = gameTime})
+      table.insert(player1.trail, {name = scancode, x = player1.x, y = player1.y, t = -1})
     end
   end
 
@@ -52,6 +52,7 @@ function love.draw()
     value:Draw()
   end
   player1:Draw()
+
   lg.printf(tempKey, u, u, 3 * u, "left")
 end
 
@@ -118,7 +119,7 @@ function loadKeys()
   table.insert(keys, Key:Create("lalt", 2.5, 4, 1.25))
   table.insert(keys, Key:Create("space", 3.75, 4, 6.25))
   table.insert(keys, Key:Create("ralt", 10, 4, 1.25))
-  table.insert(keys, Key:Create("application", 11.25, 4, 1.25))
-  table.insert(keys, Key:Create("menu", 12.5, 4, 1.25))
+  table.insert(keys, Key:Create("menu", 11.25, 4, 1.25))
+  table.insert(keys, Key:Create("application", 12.5, 4, 1.25))
   table.insert(keys, Key:Create("rctrl", 13.75, 4, 1.25))
 end

@@ -15,6 +15,6 @@ end
 
 function Key:Draw()
   lg.setFont(font)
-  lg.rectangle("line", (self.x+0.05)*u, (self.y+0.05)*u, (self.w-0.1)*u, 0.9*u, u / 4, u / 4)
-  lg.printf(self.name, self.x * u, self.y * u, self.w * u, "center")
+  lg.rectangle("line", (self.x+0.05)*u, (self.y+0.05)*u, (self.w-0.1)*u, 0.9*u, u/4, u/4)
+  lg.printf(self.name, (self.x+0.05)*u, (self.y+0.05)*u, (self.w-0.1)*u, "center")
 end
