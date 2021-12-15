@@ -1,4 +1,5 @@
 require "key"
+require "player"
 
 lg = love.graphics
 
@@ -15,11 +16,27 @@ colors = {
 }
 
 function love.load()
-  u = math.floor(math.min(lg.getHeight(), lg.getWidth()) / 20)
+  u = math.floor(math.min(lg.getHeight(), lg.getWidth()) / 10)
   loadKeys()
+  player1 = Player:Create()
+
+  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u / 3)
+
+  tempKey = "temp"
 end
 
-function love.update()
+function love.keypressed(key, scancode, isrepeat)
+  for index, value in ipairs(keys) do
+    if scancode == value.name then
+      player1.x = value.x + value.w/2
+      player1.y = value.y + 1/2
+    end
+  end
+
+  tempKey = key
+end
+
+function love.update(dt)
 end
 
 function love.draw()
@@ -28,6 +45,8 @@ function love.draw()
   for index, value in ipairs(keys) do
     value:Draw()
   end
+  player1:Draw()
+  lg.printf(tempKey, u, u, 3 * u, "left")
 end
 
 function loadKeys()
@@ -44,9 +63,9 @@ function loadKeys()
   table.insert(keys, Key:Create("0", 10, 0, 1))
   table.insert(keys, Key:Create("-", 11, 0, 1))
   table.insert(keys, Key:Create("=", 12, 0, 1))
-  table.insert(keys, Key:Create("BACKSPACE", 13, 0, 2))
+  table.insert(keys, Key:Create("backspace", 13, 0, 2))
 
-  table.insert(keys, Key:Create("TAB", 0, 1, 1.5))
+  table.insert(keys, Key:Create("tab", 0, 1, 1.5))
   table.insert(keys, Key:Create("q", 1.5, 1, 1))
   table.insert(keys, Key:Create("w", 2.5, 1, 1))
   table.insert(keys, Key:Create("e", 3.5, 1, 1))
@@ -61,7 +80,7 @@ function loadKeys()
   table.insert(keys, Key:Create("]", 12.5, 1, 1))
   table.insert(keys, Key:Create("\\", 13.5, 1, 1.5))
 
-  table.insert(keys, Key:Create("CAPS LOCK", 0, 2, 1.75))
+  table.insert(keys, Key:Create("capslock", 0, 2, 1.75))
   table.insert(keys, Key:Create("a", 1.75, 2, 1))
   table.insert(keys, Key:Create("s", 2.75, 2, 1))
   table.insert(keys, Key:Create("d", 3.75, 2, 1))
@@ -73,9 +92,9 @@ function loadKeys()
   table.insert(keys, Key:Create("l", 9.75, 2, 1))
   table.insert(keys, Key:Create(";", 10.75, 2, 1))
   table.insert(keys, Key:Create("'", 11.75, 2, 1))
-  table.insert(keys, Key:Create("ENTER", 12.75, 2, 2.25))
+  table.insert(keys, Key:Create("return", 12.75, 2, 2.25))
 
-  table.insert(keys, Key:Create("LEFT SHIFT", 0, 3, 2.25))
+  table.insert(keys, Key:Create("lshift", 0, 3, 2.25))
   table.insert(keys, Key:Create("z", 2.25, 3, 1))
   table.insert(keys, Key:Create("x", 3.25, 3, 1))
   table.insert(keys, Key:Create("c", 4.25, 3, 1))
@@ -86,14 +105,14 @@ function loadKeys()
   table.insert(keys, Key:Create(",", 9.25, 3, 1))
   table.insert(keys, Key:Create(".", 10.25, 3, 1))
   table.insert(keys, Key:Create("/", 11.25, 3, 1))
-  table.insert(keys, Key:Create("RIGHT SHIFT", 12.25, 3, 2.75))
+  table.insert(keys, Key:Create("rshift", 12.25, 3, 2.75))
 
-  table.insert(keys, Key:Create("LEFT CTRL", 0, 4, 1.25))
-  table.insert(keys, Key:Create("WINDOWS", 1.25, 4, 1.25))
-  table.insert(keys, Key:Create("LEFT ALT", 2.5, 4, 1.25))
-  table.insert(keys, Key:Create("SPACEBAR", 3.75, 4, 6.25))
-  table.insert(keys, Key:Create("RIGHT ALT", 10, 4, 1.25))
-  table.insert(keys, Key:Create("FN", 11.25, 4, 1.25))
-  table.insert(keys, Key:Create("MENU", 12.5, 4, 1.25))
-  table.insert(keys, Key:Create("RIGHT CTRL", 13.75, 4, 1.25))
+  table.insert(keys, Key:Create("lctrl", 0, 4, 1.25))
+  table.insert(keys, Key:Create("lgui", 1.25, 4, 1.25))
+  table.insert(keys, Key:Create("lalt", 2.5, 4, 1.25))
+  table.insert(keys, Key:Create("space", 3.75, 4, 6.25))
+  table.insert(keys, Key:Create("ralt", 10, 4, 1.25))
+  table.insert(keys, Key:Create("application", 11.25, 4, 1.25))
+  table.insert(keys, Key:Create("menu", 12.5, 4, 1.25))
+  table.insert(keys, Key:Create("rctrl", 13.75, 4, 1.25))
 end
