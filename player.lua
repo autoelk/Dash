@@ -1,11 +1,12 @@
 Player = {}
 Player.__index = Player
 
-function Player:Create()
+function Player:Create(color)
   local newPlayer = {
     key,
     x = 0,
     y = 0,
+    color = color,
     trail = {}
   }
   setmetatable(newPlayer, self)
@@ -13,7 +14,7 @@ function Player:Create()
 end
 
 function Player:Draw()
-  lg.setColor(colors.red)
+  lg.setColor(self.color)
   lg.circle("fill", self.x * u, self.y * u, u/4, 50)
 
   -- draw trail
@@ -23,13 +24,13 @@ function Player:Draw()
     if index ~= 1 then
       lg.setLineWidth(u*index/100) -- trails get smaller the older they are
       lg.line(lastX, lastY, value.x * u, value.y * u)
+      -- start timing how long the point has been around only after it has been drawn
+      if self.trail[index - 1].t == -1 then
+        self.trail[index - 1].t = gameTime
+      end
     end
     lastX = value.x * u
     lastY = value.y * u
-
-    if value.t == -1 then
-      value.t = gameTime -- start timing how long the trail has been around
-    end
   end
   lg.setLineWidth(u/20)
 end

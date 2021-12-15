@@ -18,21 +18,34 @@ colors = {
 function love.load()
   u = math.floor(math.min(lg.getHeight(), lg.getWidth()) / 10)
   loadKeys()
-  player1 = Player:Create()
+  players = {}
+  players[1] = Player:Create(colors.red)
+  players[2] = Player:Create(colors.blue)
+  players[3] = Player:Create(colors.green)
 
   font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u / 3)
 
   tempKey = "temp"
   gameTime = 0
+  turn = 1
 end
 
 function love.keypressed(key, scancode, isrepeat)
   for index, value in ipairs(keys) do
     if scancode == value.name then
-      player1.key = scancode
-      player1.x = value.x + value.w/2
-      player1.y = value.y + 1/2
-      table.insert(player1.trail, {name = scancode, x = player1.x, y = player1.y, t = -1})
+      for i = 0, #players, 1 do
+        if turn == i then
+          players[i].key = scancode
+          players[i].x = value.x + value.w/2
+          players[i].y = value.y + 1/2
+          table.insert(players[i].trail, {name = scancode, x = players[i].x, y = players[i].y, t = -1})
+          turn = i + 1
+          if turn == #players + 1 then
+            turn = 1
+          end
+          break;
+        end
+      end
     end
   end
 
@@ -42,17 +55,24 @@ end
 function love.update(dt)
   gameTime = gameTime + dt
   
-  player1:UpdateTrail()
+  for index, value in ipairs(players) do
+    value:UpdateTrail()
+  end
 end
 
 function love.draw()
   lg.setBackgroundColor(colors.white)
   lg.setColor(colors.black)
+
+  -- draw keyboard
   for index, value in ipairs(keys) do
     value:Draw()
   end
-  player1:Draw()
 
+  -- draw players and trails
+  for index, value in ipairs(players) do
+    value:Draw()
+  end
   lg.printf(tempKey, u, u, 3 * u, "left")
 end
 
