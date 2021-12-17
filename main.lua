@@ -16,16 +16,16 @@ colors = {
 }
 
 function love.load()
+  math.randomseed(os.time())
   u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10)
   loadKeys()
+  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
+
   players = {}
   players[1] = Player:Create(colors.red, "lctrl")
   players[2] = Player:Create(colors.blue, "rctrl")
   -- players[3] = Player:Create(colors.green)
 
-  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
-
-  tempKey = "temp"
   gameTime = 0
   control = 0 -- no one starts with control
 end
@@ -35,6 +35,8 @@ function love.keypressed(key, scancode, isrepeat)
   for index, value in ipairs(players) do
     if scancode == value.ctrlKey then
       control = index
+      
+      value.ctrlKey = keys[math.random(1, #keys)].name -- generate new ctrl key
     end
   end
 
@@ -50,11 +52,9 @@ function love.keypressed(key, scancode, isrepeat)
       end
     end
   end
-
-  tempKey = key
 end
 
-function love.update(dt)
+function love.update(dt)  
   gameTime = gameTime + dt
   
   for index, value in ipairs(players) do
@@ -64,7 +64,6 @@ end
 
 function love.draw()
   lg.setBackgroundColor(colors.white)
-  lg.setColor(colors.black)
 
   -- draw keyboard
   for index, value in ipairs(keys) do
@@ -75,7 +74,6 @@ function love.draw()
   for index, value in ipairs(players) do
     value:Draw()
   end
-  -- lg.printf(tempKey, u, u, 3 * u, "left")
 end
 
 function loadKeys()
@@ -121,7 +119,7 @@ function loadKeys()
   table.insert(keys, Key:Create("l", 9.75, 2, 1))
   table.insert(keys, Key:Create(";", 10.75, 2, 1))
   table.insert(keys, Key:Create("'", 11.75, 2, 1))
-  table.insert(keys, Key:Create("recontrol", 12.75, 2, 2.25))
+  table.insert(keys, Key:Create("return", 12.75, 2, 2.25))
 
   table.insert(keys, Key:Create("lshift", 0, 3, 2.25))
   table.insert(keys, Key:Create("z", 2.25, 3, 1))
@@ -141,7 +139,7 @@ function loadKeys()
   table.insert(keys, Key:Create("lalt", 2.5, 4, 1.25))
   table.insert(keys, Key:Create("space", 3.75, 4, 6.25))
   table.insert(keys, Key:Create("ralt", 10, 4, 1.25))
-  table.insert(keys, Key:Create("menu", 11.25, 4, 1.25))
+  -- table.insert(keys, Key:Create("menu", 11.25, 4, 1.25))
   table.insert(keys, Key:Create("application", 12.5, 4, 1.25))
   table.insert(keys, Key:Create("rctrl", 13.75, 4, 1.25))
 end
