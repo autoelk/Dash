@@ -24,9 +24,7 @@ function love.load()
   players = {}
   players[1] = Player:Create(colors.red, "lctrl")
   players[2] = Player:Create(colors.blue, "rctrl")
-  -- players[3] = Player:Create(colors.green)
 
-  gameTime = 0
   control = 0 -- no one starts with control
 end
 
@@ -47,18 +45,18 @@ function love.keypressed(key, scancode, isrepeat)
           players[i].key = scancode
           players[i].x = value.x + value.w/2
           players[i].y = value.y + 1/2
-          table.insert(players[i].trail, {name = scancode, x = players[i].x, y = players[i].y, t = -1})
+          table.insert(players[i].trail, {name = scancode, x = players[i].x, y = players[i].y})
         end
       end
     end
   end
 end
 
-function love.update(dt)  
-  gameTime = gameTime + dt
-  
+function love.update(dt)    
   for index, value in ipairs(players) do
-    value:UpdateTrail()
+    while #value.trail > 4 do
+      table.remove(value.trail, 1)
+    end
   end
 end
 

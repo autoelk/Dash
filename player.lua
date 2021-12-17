@@ -25,21 +25,9 @@ function Player:Draw()
     if index ~= 1 then
       lg.setLineWidth(u*math.log(index)/10) -- trails get smaller the older they are
       lg.line(lastX, lastY, value.x * u, value.y * u)
-      -- start timing how long the point has been around only after it has been drawn
-      if self.trail[index - 1].t == -1 then
-        self.trail[index - 1].t = gameTime
-      end
     end
     lastX = value.x * u
     lastY = value.y * u
   end
   lg.setLineWidth(u/20)
-end
-
-function Player:UpdateTrail()
-  for index, value in ipairs(self.trail) do
-    if value.t < gameTime - 1 and value.t ~= -1 then
-      table.remove(self.trail, index)
-    end
-  end
 end
