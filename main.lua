@@ -16,34 +16,36 @@ colors = {
 }
 
 function love.load()
-  u = math.floor(math.min(lg.getHeight(), lg.getWidth()) / 10)
+  u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10)
   loadKeys()
   players = {}
-  players[1] = Player:Create(colors.red)
-  players[2] = Player:Create(colors.blue)
-  players[3] = Player:Create(colors.green)
+  players[1] = Player:Create(colors.red, "lctrl")
+  players[2] = Player:Create(colors.blue, "rctrl")
+  -- players[3] = Player:Create(colors.green)
 
-  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u / 3)
+  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
 
   tempKey = "temp"
   gameTime = 0
-  turn = 1
+  control = 0 -- no one starts with control
 end
 
 function love.keypressed(key, scancode, isrepeat)
+
+  for index, value in ipairs(players) do
+    if scancode == value.ctrlKey then
+      control = index
+    end
+  end
+
   for index, value in ipairs(keys) do
     if scancode == value.name then
-      for i = 0, #players, 1 do
-        if turn == i then
+      for i = 1, #players, 1 do
+        if control == i then
           players[i].key = scancode
           players[i].x = value.x + value.w/2
           players[i].y = value.y + 1/2
           table.insert(players[i].trail, {name = scancode, x = players[i].x, y = players[i].y, t = -1})
-          turn = i + 1
-          if turn == #players + 1 then
-            turn = 1
-          end
-          break;
         end
       end
     end
@@ -73,7 +75,7 @@ function love.draw()
   for index, value in ipairs(players) do
     value:Draw()
   end
-  lg.printf(tempKey, u, u, 3 * u, "left")
+  -- lg.printf(tempKey, u, u, 3 * u, "left")
 end
 
 function loadKeys()
@@ -119,7 +121,7 @@ function loadKeys()
   table.insert(keys, Key:Create("l", 9.75, 2, 1))
   table.insert(keys, Key:Create(";", 10.75, 2, 1))
   table.insert(keys, Key:Create("'", 11.75, 2, 1))
-  table.insert(keys, Key:Create("return", 12.75, 2, 2.25))
+  table.insert(keys, Key:Create("recontrol", 12.75, 2, 2.25))
 
   table.insert(keys, Key:Create("lshift", 0, 3, 2.25))
   table.insert(keys, Key:Create("z", 2.25, 3, 1))
