@@ -29,34 +29,31 @@ function love.load()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-
-  for index, value in ipairs(players) do
-    if scancode == value.ctrlKey then
-      control = index
-      
-      value.ctrlKey = keys[math.random(1, #keys)].name -- generate new ctrl key
+  -- detect if a ctrl key was pressed, causing a new player to take control
+  for i, player in ipairs(players) do
+    if scancode == player.ctrlKey then
+      control = i
+      player.ctrlKey = keys[math.random(1, #keys)].name -- generate new ctrl key
     end
   end
 
-  for index, value in ipairs(keys) do
-    if scancode == value.name then
-      for i = 1, #players, 1 do
-        if control == i then
-          players[i].key = scancode
-          players[i].x = value.x + value.w/2
-          players[i].y = value.y + 1/2
-          table.insert(players[i].trail, {name = scancode, x = players[i].x, y = players[i].y})
+  -- move player to new key
+  for i, key in ipairs(keys) do
+    -- find key that was pressed
+    if scancode == key.name then
+      for j, player in ipairs(players) do
+        -- find player in control
+        if control == j then
+          player:Move(key)
         end
       end
     end
   end
 end
 
-function love.update(dt)    
+function love.update(dt)
   for index, value in ipairs(players) do
-    while #value.trail > 4 do
-      table.remove(value.trail, 1)
-    end
+    value:CheckIntersect()
   end
 end
 
@@ -64,13 +61,13 @@ function love.draw()
   lg.setBackgroundColor(colors.white)
 
   -- draw keyboard
-  for index, value in ipairs(keys) do
-    value:Draw()
+  for i, key in ipairs(keys) do
+    key:Draw()
   end
 
   -- draw players and trails
-  for index, value in ipairs(players) do
-    value:Draw()
+  for i, player in ipairs(players) do
+    player:Draw()
   end
 end
 
@@ -133,7 +130,7 @@ function loadKeys()
   table.insert(keys, Key:Create("rshift", 12.25, 3, 2.75))
 
   table.insert(keys, Key:Create("lctrl", 0, 4, 1.25))
-  table.insert(keys, Key:Create("lgui", 1.25, 4, 1.25))
+  -- table.insert(keys, Key:Create("lgui", 1.25, 4, 1.25))
   table.insert(keys, Key:Create("lalt", 2.5, 4, 1.25))
   table.insert(keys, Key:Create("space", 3.75, 4, 6.25))
   table.insert(keys, Key:Create("ralt", 10, 4, 1.25))

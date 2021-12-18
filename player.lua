@@ -14,6 +14,18 @@ function Player:Create(color, ctrlKey)
   return newPlayer
 end
 
+function Player:Move(key)
+  self.key = key.name
+  self.x = key.x + key.w/2
+  self.y = key.y + 1/2
+  table.insert(self.trail, {x = self.x, y = self.y})
+
+  -- make sure the trail is only 3 segments long
+  if #self.trail > 4 then
+    table.remove(self.trail, 1)
+  end
+end
+
 function Player:Draw()
   lg.setColor(self.color)
   lg.circle("fill", self.x * u, self.y * u, u/6, 50)
@@ -30,4 +42,9 @@ function Player:Draw()
     lastY = value.y * u
   end
   lg.setLineWidth(u/20)
+end
+
+function Player:CheckIntersect()
+  for index, value in ipairs(players) do
+  end
 end
