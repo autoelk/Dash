@@ -45,7 +45,6 @@ function love.keypressed(key, scancode, isrepeat)
         -- find player in control
         if control == j then
           player:Move(key)
-          player:CheckIntersect()
         end
       end
     end
