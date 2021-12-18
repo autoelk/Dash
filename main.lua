@@ -22,27 +22,16 @@ function love.load()
   font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
 
   players = {}
-  players[1] = Player:Create(colors.green, "lctrl")
-  players[2] = Player:Create(colors.blue, "rctrl")
+  players[1] = Player:Create(colors.green)
+  players[2] = Player:Create(colors.blue)
 
   control = 0 -- no one starts with control
 end
 
 function love.keypressed(key, scancode, isrepeat)
-  -- detect if a ctrl key was pressed, causing a new player to take control
-  for i, player in ipairs(players) do
-    if scancode == player.ctrlKey then
-      control = i
-      player.ctrlKey = keys[math.random(1, #keys)].name -- generate new ctrl key
-    end
-  end
-
-  -- move player to new key
   for i, key in ipairs(keys) do
-    -- find key that was pressed
     if scancode == key.name then
       for j, player in ipairs(players) do
-        -- find player in control
         if control == j then
           player:Move(key)
         end

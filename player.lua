@@ -1,13 +1,12 @@
 Player = {}
 Player.__index = Player
 
-function Player:Create(color, ctrlKey)
+function Player:Create(color)
   local newPlayer = {
     key,
     x = 0,
     y = 0,
     color = color,
-    ctrlKey = ctrlKey,
     trail = {}
   }
   setmetatable(newPlayer, self)
