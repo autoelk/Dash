@@ -1,19 +1,19 @@
-Player = {}
-Player.__index = Player
+Marker = {}
+Marker.__index = Marker
 
-function Player:Create(color)
-  local newPlayer = {
+function Marker:Create(color)
+  local newMarker = {
     key,
     x = 0,
     y = 0,
     color = color,
     trail = {}
   }
-  setmetatable(newPlayer, self)
-  return newPlayer
+  setmetatable(newMarker, self)
+  return newMarker
 end
 
-function Player:Move(key)
+function Marker:Move(key)
   self.key = key.name
   self.x = key.x + key.w/2
   self.y = key.y + 1/2
@@ -25,16 +25,16 @@ function Player:Move(key)
   end
 end
 
-function Player:Draw()
+function Marker:Draw()
   lg.setColor(self.color)
-  lg.circle("fill", self.x*u, self.y*u, u/6, 50)
-
+  
   -- draw trail
   local lastX
   local lastY
   for i, point in ipairs(self.trail) do
     if i ~= 1 then
       lg.setLineWidth(u*math.log(i + 1)/10) -- trails get smaller the older they are
+      lg.circle("fill", point.x*u, point.y*u, u*math.log(i + 1)/20, 100) -- circles that connect each segment
       lg.line(lastX*u, lastY*u, point.x*u, point.y*u)
     end
     lastX = point.x

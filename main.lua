@@ -1,5 +1,5 @@
 require "key"
-require "player"
+require "marker"
 
 lg = love.graphics
 
@@ -20,22 +20,13 @@ function love.load()
   u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10)
   loadKeys()
   font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
-
-  players = {}
-  players[1] = Player:Create(colors.green)
-  players[2] = Player:Create(colors.blue)
-
-  control = 0 -- no one starts with control
+  marker = Marker:Create(colors.blue)
 end
 
 function love.keypressed(key, scancode, isrepeat)
   for i, key in ipairs(keys) do
     if scancode == key.name then
-      for j, player in ipairs(players) do
-        if control == j then
-          player:Move(key)
-        end
-      end
+      marker:Move(key)
     end
   end
 end
@@ -50,11 +41,7 @@ function love.draw()
   for i, key in ipairs(keys) do
     key:Draw()
   end
-
-  -- draw players and trails
-  for i, player in ipairs(players) do
-    player:Draw()
-  end
+  marker:Draw()
 end
 
 function loadKeys()
