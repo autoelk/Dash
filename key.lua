@@ -16,9 +16,9 @@ end
 function Key:Draw()
   lg.setColor(colors.black)
   -- highlight if it is a control key for a player
-  for index, value in ipairs(players) do
-    if self.name == value.ctrlKey then
-      lg.setColor(value.color)
+  for i, player in ipairs(players) do
+    if self.name == player.ctrlKey then
+      lg.setColor(player.color)
     end
   end
   lg.rectangle("line", (self.x+0.05)*u, (self.y+0.05)*u, (self.w-0.1)*u, 0.9*u, u/4, u/4)

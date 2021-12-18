@@ -22,7 +22,7 @@ function love.load()
   font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
 
   players = {}
-  players[1] = Player:Create(colors.red, "lctrl")
+  players[1] = Player:Create(colors.green, "lctrl")
   players[2] = Player:Create(colors.blue, "rctrl")
 
   control = 0 -- no one starts with control
@@ -45,6 +45,7 @@ function love.keypressed(key, scancode, isrepeat)
         -- find player in control
         if control == j then
           player:Move(key)
+          player:CheckIntersect()
         end
       end
     end
@@ -52,9 +53,6 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.update(dt)
-  for index, value in ipairs(players) do
-    value:CheckIntersect()
-  end
 end
 
 function love.draw()
