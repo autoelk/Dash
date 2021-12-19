@@ -28,12 +28,11 @@ end
 
 function Player:Draw()
   lg.setColor(self.color)
-  lg.circle("fill", self.x*u, self.y*u, u/6, 50)
-
   -- draw trail
   segments = pointsToSegments(self.trail)
   for i, seg in ipairs(segments) do
     lg.setLineWidth(u*math.log(i + 1)/10) -- trails get smaller the older they are
+    lg.circle("fill", seg.x2*u, seg.y2*u, u*math.log(i + 1)/20, 100) -- circles that connect each segment
     lg.line(seg.x1*u, seg.y1*u, seg.x2*u, seg.y2*u)
   end
   lg.setLineWidth(u/20)

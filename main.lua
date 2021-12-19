@@ -19,7 +19,7 @@ function love.load()
   math.randomseed(os.time())
   u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10)
   loadKeys()
-  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
+  font = lg.newFont("assets/ReadexPro-Regular.ttf", u/3)
 
   players = {}
   players[1] = Player:Create(colors.green, "lctrl")
