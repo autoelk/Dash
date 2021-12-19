@@ -1,5 +1,6 @@
 require "key"
 require "marker"
+require "player"
 
 lg = love.graphics
 
@@ -17,25 +18,58 @@ colors = {
 
 function love.load()
   math.randomseed(os.time())
-  u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10)
+  u = math.floor(math.min(lg.getHeight(), lg.getWidth())/10) -- size of one standard keycap
   loadKeys()
-  font = love.graphics.newFont("assets/ReadexPro-Regular.ttf", u/3)
+  font = lg.newFont("assets/ReadexPro-Regular.ttf", u/3)
+
+  -- load dictionary of words
+  io.input("dict.txt")
+  input = io.read("*all")
+  dict = {}
+  for word in input:gmatch("%S+") do
+    table.insert(dict, word)
+  end
+
   marker = Marker:Create(colors.blue)
+
+  players = {
+    Player:Create(colors.green, "left"),
+    Player:Create(colors.red, "right")
+  }
+
+  for i, player in ipairs(players) do
+    player:GenWord()
+  end
 end
 
 function love.keypressed(key, scancode, isrepeat)
-  for i, key in ipairs(keys) do
-    if scancode == key.name then
-      marker:Move(key)
+  for i, value in ipairs(keys) do
+    if scancode == value.name then
+      marker:Move(value)
     end
+  end
+
+  for i, player in ipairs(players) do
+    player:CheckWord(scancode)
   end
 end
 
 function love.update(dt)
+  for i, player in ipairs(players) do
+    if #player.word <= 0 then
+      player:GenWord()
+      player.points = player.points + 1
+    end
+  end
 end
 
 function love.draw()
   lg.setBackgroundColor(colors.white)
+  
+  -- draw words
+  for i, player in ipairs(players) do
+    player:Draw()
+  end
 
   -- draw keyboard
   for i, key in ipairs(keys) do
